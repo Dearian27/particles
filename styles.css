@@ -1,0 +1,35 @@
+.particle {
+  height: 8px;
+  width: 8px;
+  /* transform: rotateZ(45deg); */
+  opacity: 60%;
+  position: absolute;
+  animation: down 1s ease-in-out; 
+  opacity: 0;
+}
+
+body {
+  background-color: rgb(37, 38, 49);
+}
+
+@keyframes down {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: 
+    translate(0px, 0px) 
+    
+    ;
+    /* , rotate(0deg); */
+  }
+  100% {
+    transform:
+    translate(0px, 50px)
+    rotateX(90deg) rotateZ(90deg)
+    ;
+    opacity: 0;
+    /* , rotate(360deg); */
+  }
+}
