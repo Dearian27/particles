@@ -1,35 +1,50 @@
-.particle {
-  height: 8px;
-  width: 8px;
-  /* transform: rotateZ(45deg); */
-  opacity: 60%;
-  position: absolute;
-  animation: down 1s ease-in-out; 
-  opacity: 0;
-}
-
 body {
-  background-color: rgb(37, 38, 49);
+  animation: gradient 20s linear infinite;
 }
 
-@keyframes down {
+.particle {
+  position: absolute;
+  animation: down 2s ease-in-out; 
+  opacity: 1;
+  fill:#437dfa;
+}
+
+.glow {
+  position: absolute;
+  border-radius: 50px;
+  height: 0px;
+  width: 0px;
+  box-shadow: 0rem 0rem 10px 5px rgb(135, 194, 250);
+  background-color: lightskyblue;
+  /* animation: fade-out 0.1s ease-in-out; */
+}
+
+/* @keyframes fade-out {
   0% {
-    opacity: 0;
-  }
-  20% {
     opacity: 1;
-    transform: 
-    translate(0px, 0px) 
-    
-    ;
-    /* , rotate(0deg); */
   }
   100% {
-    transform:
-    translate(0px, 50px)
-    rotateX(90deg) rotateZ(90deg)
-    ;
-    opacity: 0;
-    /* , rotate(360deg); */
+    opacity: 0.7;
   }
-}
+} */
+
+@keyframes gradient {
+  0% {
+    background-color: rgb(252, 255, 216);
+  }
+  20% {
+    background-color: rgb(255, 216, 250);
+  }
+  40% {
+    background-color: rgb(217, 216, 255);
+  }
+  60% {
+    background-color: rgb(216, 254, 255);
+  }
+  80% {
+    background-color: rgb(227, 255, 216);
+  }
+  100% {
+    background-color: rgb(252, 255, 216);
+  }
+} 

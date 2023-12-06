@@ -1,49 +1,58 @@
 const body = document.querySelector('body');
-let pixelIndex = 0;
 
-const canvas = document.createElement('canvas');
-canvas.width = 200;
-const ctx = canvas.getContext('2d');
-const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-gradient.addColorStop(0, '#b827fc');
-gradient.addColorStop(0.25, '#2c90fc');
-gradient.addColorStop(0.5, '#b8fd33');
-gradient.addColorStop(0.75, '#fec837');
-gradient.addColorStop(1, '#fd1892');
-ctx.fillStyle = gradient;
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-function getPixelColor(x, y) {
-    const imageData = ctx.getImageData(x, y, 1, 1);
-    const data = imageData.data;
-    const color = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
-    return color;
+const snowflakes = [
+  "./snowflake.svg",
+  "./snowflake2.svg",
+  "./snowflake3.svg",
+  "./snowflake4.svg",
+  "./snowflake5.svg",
+]
+const lastSnow = [0, 0];
+const delay = 2000;
+const rand = (min, max) => {
+  return Math.floor(Math.random() * (max-min) + min);
 }
 
-const cursorPosition = [null, null];
 window.addEventListener('mousemove', (event) => {
-  cursorPosition[0] = event.pageX;
-  cursorPosition[1] = event.pageY;
+  const x = event.pageX;
+  const y = event.pageY;
+  const currentX = lastSnow[0] - x;
+  const currentY = lastSnow[1] - y;
+  const length = Math.sqrt(Math.pow(currentX, 2) + Math.pow(currentY, 2));
+  if(length > 85) {
+    lastSnow[0] = x;
+    lastSnow[1] = y;
+    const particle = document.createElement('img');
+    particle.height = 20;
+    particle.width = 20;
+    particle.src = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+    particle.classList.add('particle');
+    particle.style.top = y + 'px';
+    particle.style.left = x + 'px';
+    particle.animate({
+      translate: `${rand(-40, 40)}px ${rand(50, 100)}px`,
+      opacity: 0,
+      transform: `rotateX(${rand(1, 500)}deg) rotateY(${rand(1, 500)}deg)`
+    }, {
+      duration: delay,
+      fill: 'forwards',
+    });
+    body.appendChild(particle)
+    setTimeout(() => body.removeChild(particle), delay)
+  }
+
+  const glow = document.createElement('div');
+  glow.classList.add('glow');
+  glow.style.top = y + 'px';
+  glow.style.left = x + 'px';
+  body.appendChild(glow)
+  setTimeout(() => body.removeChild(glow), 100)
 });
 
-document.onload = () => {
-  cursorShining();
-}
+
 const cursorShining = () => {
   const shining = setInterval(() => {
-    if(cursorPosition[0] && cursorPosition[1]) {
-      const particle = document.createElement('div');
-      const offsetX = Math.floor((Math.random() * 20) - 10);
-      const offsetY = Math.floor((Math.random() * 20) - 10);
-      particle.classList.add('particle');
-      // particle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="16" width="12" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M40.1 467.1l-11.2 9c-3.2 2.5-7.1 3.9-11.1 3.9C8 480 0 472 0 462.2V192C0 86 86 0 192 0S384 86 384 192V462.2c0 9.8-8 17.8-17.8 17.8c-4 0-7.9-1.4-11.1-3.9l-11.2-9c-13.4-10.7-32.8-9-44.1 3.9L269.3 506c-3.3 3.8-8.2 6-13.3 6s-9.9-2.2-13.3-6l-26.6-30.5c-12.7-14.6-35.4-14.6-48.2 0L141.3 506c-3.3 3.8-8.2 6-13.3 6s-9.9-2.2-13.3-6L84.2 471c-11.3-12.9-30.7-14.6-44.1-3.9zM160 192a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm96 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>`;
-      // particle.style.fill = getPixelColor(pixelIndex, 0);
-      particle.style.top = cursorPosition[1] + offsetY + 'px';
-      particle.style.left = cursorPosition[0] + offsetX + 'px';
-      pixelIndex = (pixelIndex + 1) % canvas.width;
-      particle.style.backgroundColor = getPixelColor(pixelIndex, 0);
-      body.appendChild(particle)
-      setTimeout(() => body.removeChild(particle), 1000)
-    }
+    
   }, 20);
 }
 cursorShining();
