@@ -23,8 +23,9 @@ window.addEventListener('mousemove', (event) => {
     lastSnow[0] = x;
     lastSnow[1] = y;
     const particle = document.createElement('img');
-    particle.height = 20;
-    particle.width = 20;
+    const size = rand(10, 30);
+    particle.height = size;
+    particle.width = size;
     particle.src = snowflakes[Math.floor(Math.random() * snowflakes.length)];
     particle.classList.add('particle');
     particle.style.top = y + 'px';
